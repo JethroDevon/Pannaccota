@@ -1,0 +1,1 @@
+Experiments with sockets to warm up and remember how to set up a project 
