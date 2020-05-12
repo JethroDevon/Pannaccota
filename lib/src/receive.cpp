@@ -17,21 +17,22 @@ bool Receive::Connect(){
         return 1;
     } 
 
-    memset(&serv_addr, '0', sizeof(serv_addr)); 
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT); 
+    memset(&li_addr, '0', sizeof(serv_addr)); 
+    li_addr.sin_family = AF_INET;
+    li_addr.sin_port = htons(PORT); 
     
-    if(inet_pton(AF_INET, IP.data(), &serv_addr.sin_addr)<=0){
+    if(inet_pton(AF_INET, IP.data(), &li_addr.sin_addr)<=0){
       
         printf("\n address not found");
         return false;
     }
       
-    if( connect(listenfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0){
+    if( connect(listenfd, (struct sockaddr *)&li_addr, sizeof(li_addr)) < 0){
       
        return false;
     }else{
 
+      connected = true;
       return true;
     }
 }
@@ -77,6 +78,7 @@ Receive::Receive(const Receive &r){
 //gracefull deconstruction
 Receive::~Receive(){
 
+  connected = false;
   Close();
 }
 
