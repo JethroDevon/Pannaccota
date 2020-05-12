@@ -19,12 +19,12 @@ class Transmit{
 
   //data out, file descriptor, set up to listen
   int sockfd = 0;
-  unsigned char tra_stack[buffer_size];
   bool connected = false;
   
  public:
 
-  Transmit(int _fd);
-  void Send(unsigned char _tra);
+  Transmit(int);
+  bool isConnected();
+  void Send(const char*);
 };
 #endif

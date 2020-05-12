@@ -14,6 +14,7 @@
 #include <cstring>
 #include <iostream>
 #include <memory.h>
+#include "../src/receive.cpp"
 
 #define stack_num 6
 #define buffer_size 1024

@@ -20,7 +20,8 @@ class Server{
   int servfd = 0, PORT = 0, opt = 1, addr_len = 0;
   std::string IP = "";
   struct sockaddr_in serv_addr;
-
+  bool failed = false;
+  
   public:
   
     Server(int _PORT);
