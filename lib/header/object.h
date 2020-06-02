@@ -1,6 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 #define NULL = 0
+#define BYTESIZE int(sizeof(unsigned char*))
 
 #include <iostream>
 #include <string>
@@ -14,31 +15,32 @@ class Object{
 
       struct Node *next = NULL;
       unsigned char* data;
-      unsigned char localsize = 0;
+      int localsize = 0;
       unsigned char metadata = 0;
       std::string label = "";
   };
 
   struct Node head;
-  struct Node sub;  
+  struct Node sub;
+
+  int getType(struct Node*);
+  int getLocalSize(struct Node*);
+  int getTitleSize(struct Node*);
   
   public:
 
     Object();
 
-    ///linked list operations
-
     //push data then name data label and its type, for now the types are as follows:
     //'1' is "custom",'2' is "folder",'3' is "string",'4' is "uint8", reserves lots of possibilities
-    ///remember to zero memory before rolling out - omg dont forget garbage either
+    ///TD:remember to zero memory before rolling out - omg dont forget garbage either
     void push(unsigned char*, std::string, int);
-    //void append(struct Node*, unsigned char*);
-    //void pop();
-    //void insert(struct Node*, unsigned char*);
+    void addNestedData(struct Node*);///TD:am sure is a super elegant binary tree postifix style solution to do this but saving it for later
   
     ///object operations
     unsigned char* get();
-    void getAll();
+    void readAll(struct Node*);
+    
 };
 
 #endif

@@ -4,7 +4,7 @@ Object::Object(){
 
   head.next = NULL;
 }
-
+///TD: char data can definately be too big due to not having a set size yet - can be used for overflow
 void Object::push(unsigned char *chardata, std::string datalabel, int datatype){
 
   //create and init node
@@ -14,22 +14,47 @@ void Object::push(unsigned char *chardata, std::string datalabel, int datatype){
   
   //adds length of label to first nibbleh of metadata byte 
   int length = lenode->label.length();
+  
   if(length > 15){
     lenode->label = lenode->label.substr(15);
   }
+  
   lenode->metadata = (char)length;
   
-  //converts type into flipping the appropriate bit in the second half of the metadata nibbleh
+  //flips the appropriate bit for datatype in the second half of the metadata nibbleh
   if(datatype <= 4 && datatype > 0){
 
       lenode->metadata |= 1UL << ((4 + datatype) -1);  
   }
 
-  lenode->localsize = strlen(chardata);
-
+  lenode->localsize = BYTESIZE + (BYTESIZE * strlen((const char*)chardata); //get exact size of all data pushed onto object
+  
   //link node to head
   lenode->next = head.next;
   head.next = lenode;
+}
+
+int Object::getLocalSize(struct Node* node){
+
+  return node->localsize;
+}
+
+//returns the lower byte
+int Object::getTitleSize(struct Node* node){
+
+  return (node->metadata) & 15; //gets lower nibble
+}
+
+//returns the lower byte
+int Object::getType(struct Node* node){
+
+  return (node->metadata) >> 4; //gets lower nibble
+}
+
+//pushes linked list onto sub node
+void Object::addNestedData(struct Node* subnode){
+
+  sub.next = subnode;
 }
 
 unsigned char* Object::get(){
@@ -37,22 +62,14 @@ unsigned char* Object::get(){
   return head.next->data;
 }
 
-void Object::getAll(){
+void Object::readAll(struct Node* node){
 
-  struct Node* temp = new Node;
-  temp = head.next;
+  temp = node.next;
+  
   ///keep all this in here like this until is finished  
   while (temp != NULL){
 
-    std::cout << temp->data << " " << strlen((char*)temp->data)<< " " << temp->label << " ";
-
-    for(int x = 0; x < 8; x++){
-
-      int y = ((byte >> x) & 1);
-      std::cout << y;
-    }
-  
-    std::cout << std::endl;
+    std::cout<< temp->data<<" "<<getLocalSize(temp)<<" "<<temp->label<<" "<<getTitleSize(temp)<<" "<<getType(temp)<<std::endl;
     temp = temp->next;
   }
 }

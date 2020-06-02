@@ -21,11 +21,11 @@ int main( int argc, const char* argv[] ){
   unsigned char* finale = &finalString[0];
   
 
-  obj.push(my,"one",1);
-  obj.push(other,"two",1);
-  obj.push(another,"three",1);
-  obj.push(finale,"four",1);
-  obj.getAll();
+  obj.push(my,"random",1);
+  obj.push(other,"folder",2);
+  obj.push(another,"string",3);
+  obj.push(finale,"uint8",4);
+  obj.getAll(obj.head);
   
 }
 		  
