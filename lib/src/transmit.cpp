@@ -1,16 +1,6 @@
-#include "../header/transmit.h"
+#include "../header/serialise.h"
 
-Transmit::Transmit(int _fd):sockfd(_fd){
+unsigned char* Serialise::stringToBin(std::string _string){
 
-  connected = true;
-};
-
-bool Transmit::isConnected(){
-
-  return connected;
-}
-
-void Transmit::Send(const char* data_out){
-
-  send(sockfd , data_out , strlen(data_out) , 0 ); 
+ 
 }
