@@ -34,6 +34,6 @@ int main( int argc, const char* argv[] ){
   obj.push(finale,&label4[0],4);
   
   obj.readAll();
-  
+    
 }
 		  
