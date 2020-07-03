@@ -12,6 +12,11 @@
 //BER - functions contain operations for linked list type architecture
 //and serialising/deserialising too and from bytes (unsigned char*)
 //this is all an experiment this mustnt reflect on my knowledge
+
+//file type is '1' is "custom",'2' is "folder",'4' is "string",'8' is "bytes",
+//however the protocol I will use can wait for now
+
+
 class Object{
 
   struct Node{
@@ -25,7 +30,6 @@ class Object{
 
   struct Node head;
 
-  int getType(struct Node*);
   int getLabelSize(struct Node*);
   uint8_t getLocalSize(struct Node*);
   
@@ -33,23 +37,28 @@ class Object{
 
     Object();
 
-    //push data then name data label and its type, for now the types are as follows:
-    //'1' is "custom",'2' is "folder",'4' is "string",'8' is "uint8", reserves lots of possibilities
-    ///TD:remember to zero memory before rolling out - omg dont forget garbage either
     bool push(uint8_t[], uint8_t[], int);
+    void push(struct Node*);
     
     //returns the node as bytes 
     void getSerialisedNode(struct Node*, uint8_t[]);
 
     //writes all data in node on left to array on right  
     void getSerialisedObject(struct Node*, uint8_t[]);
+    uint8_t* getSerial();
+    Object buildDataObject(uint8_t*);
 
-    //assigns node in left args with data in right, returns pos of next node
-    int serial2Node(struct Node*, uint8_t*);
-    int getTotalSize(struct Node*);
-  
+    //reads all the data on the nodes on the object
     void readAll();
-    
+  
+    //builds an unsigned integer with four bytes - might build helper class which is aware of what processor is working on
+    unsigned int buildInt(uint8_t, uint8_t, uint8_t, uint8_t);    
+    int getTotalSize(struct Node*);
+    int getTotalSize();
+    int getSerialSize(uint8_t*);
+    int nodeCount();
+    const char* getDataType(struct Node*);
+
 };
 
 #endif
