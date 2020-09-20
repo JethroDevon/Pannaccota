@@ -138,7 +138,7 @@ Object Object::buildDataObject(uint8_t* serialdata){
     startpos = (startpos + size) + 1;
     endpos = startpos + size;
 
-    //its not unlikely the data structure is corrupted, the protocol isnt very robust, TD: maybe return an error object
+    //its not unlikely the data structure is corrupted, the protocol isnt very robust, TD: maybe return an initialised error node
     detect_data_corruption++;
     if(detect_data_corruption > 1024){
 
@@ -164,18 +164,19 @@ int Object::nodeCount(){
   return count;
 }
 
+//gets size of node passed into object
 uint8_t Object::getLocalSize(struct Node* node){
 
   return node->localsize;
 }
 
-//returns the lower byte
+//returns the upper byte that gives the label size
 int Object::getLabelSize(struct Node* node){
 
   return (node->metadata) & 15; //gets lower nibble
 }
 
-//returns the lower byte
+//returns the lower byte giving the set data type flag
 const char* Object::getDataType(struct Node* node){
 
   int type = (node->metadata) >> 4; //gets lower nibble
@@ -190,10 +191,12 @@ const char* Object::getDataType(struct Node* node){
 
     return "string";
   }else{
+    
     return "bytes";
   }
 }
 
+//get total size of node passed into args onwards
 int Object::getTotalSize(struct Node* node){
 
   int total = 0;
@@ -207,6 +210,7 @@ int Object::getTotalSize(struct Node* node){
   return total;
 }
 
+//get entire size of all objects in data structure
 int Object::getTotalSize(){
 
   int total = 8;
@@ -220,6 +224,7 @@ int Object::getTotalSize(){
   return total;
 }
 
+//returns an integer built from the first four bytes of serialdata
 int Object::getSerialSize(uint8_t* serialdata){
 
   return buildInt(serialdata[0],serialdata[1],serialdata[2],serialdata[3]);
